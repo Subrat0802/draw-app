@@ -9,7 +9,7 @@ export function AuthPage({isSignin}: {isSignin: boolean}) {
             <Input  placeholder="Email" type="text"/>
             <Input placeholder="Password" type="password"/>
             <Button children={isSignin ? "Sign In" : "Sign Up"}  className="bg-black p-2 rounded-lg"/>
-            <Link href={"/"}><p>Home page</p></Link>
+            <Link href={"/"}><p className="text-xs">Home page</p></Link>
         </div>
     </div>
 }
