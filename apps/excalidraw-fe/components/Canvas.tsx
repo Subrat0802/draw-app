@@ -1,17 +1,39 @@
 import { initDraw } from "@/draw";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
+export function Canvas({ roomId, socket }: { roomId: string; socket: WebSocket }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-export function Canvas({roomId, socket}:{roomId: string, socket: WebSocket}){
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    useEffect(() => {
-        if(canvasRef.current){
-            const canvas = canvasRef.current;
-            initDraw(canvas, roomId, socket);
-        }
-    }, [canvasRef]);
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-    return <canvas width={1440} height={732} ref={canvasRef} >
+  useEffect(() => {
+    function updateWindowSize() {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
 
-        </canvas>
+    window.addEventListener("resize", updateWindowSize);
+
+    return () => window.removeEventListener("resize", updateWindowSize);
+  }, []);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      initDraw(canvasRef.current, roomId, socket);
+    }
+  }, [canvasRef, roomId, socket]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={size.width}
+      height={size.height}
+      style={{ display: "block" }} 
+    />
+  );
 }
