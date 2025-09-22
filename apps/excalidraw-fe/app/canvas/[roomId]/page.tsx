@@ -1,4 +1,5 @@
 "use client"
+import { initDraw } from "@/draw";
 import { useEffect, useRef } from "react"
 
 
@@ -7,41 +8,12 @@ export default function Canvas() {
     useEffect(() => {
         if(canvasRef.current){
             const canvas = canvasRef.current;
-            const ctx = canvas.getContext("2d");
-
-            if(!ctx){
-                return;
-            }
-
-            let clicked = false;
-            let startX = 0;
-            let startY = 0;
-            canvas.addEventListener("mousedown", (e) => {
-                clicked = true
-                startX = e.clientX;
-                startY = e.clientY;
-            })
-
-            canvas.addEventListener("mouseup", (e) => {
-                clicked = false
-                console.log(e.clientX);
-                console.log(e.clientY);
-            })
-
-            canvas.addEventListener("mousemove", (e) => {
-                if(clicked){
-                    const width = e.clientX - startX;
-                    const height = e.clientY - startY;
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.strokeRect(startX, startY, width, height);
-                }
-            })
+            initDraw(canvas);
         }
     }, [canvasRef]);
 
     return <div>
-        <canvas width={1430} height={730} ref={canvasRef} className=" bg-red-500">
+        <canvas width={1440} height={732} ref={canvasRef} className=" bg-gray-600">
 
         </canvas>
     </div>
